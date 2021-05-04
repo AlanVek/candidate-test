@@ -86,7 +86,7 @@ async def burst(dut):
     stream_input_b = Stream.Driver(dut.clk, dut, 'b__')
     stream_output = Stream.Driver(dut.clk, dut, 'r__')
 
-    N = 10
+    N = 100
     width = len(dut.a__data)
     minlim, maxlim = -2**(width - 1), 2**(width - 1) - 1
 
@@ -102,14 +102,11 @@ async def burst(dut):
     cocotb.fork(stream_input_a.send(data_a))
     cocotb.fork(stream_input_b.send(data_b))
     recved = await stream_output.recv(N)
-    print(data_a)
-    print(data_b)
-    print(expected)
-    print(recved)
+    
     assert recved == expected
 
 if __name__ == '__main__':
-    core = Binary_Adder(3)
+    core = Binary_Adder(5)
 
     run(
         core, 'Ej_1_Solved',
