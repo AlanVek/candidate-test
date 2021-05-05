@@ -13,6 +13,10 @@ module top(dat_r, dat_w, we, clk, rst, adr);
   input we;
   reg [7:0] mem [15:0];
   $readmemh("memdump0.mem", mem);
+
+  reg [7:0] newmem [5:0];
+  $readmemh("memdump1.mem", newmem);
+
   reg [3:0] _0_;
   always @(posedge clk) begin
     _0_ <= mem_r_addr;

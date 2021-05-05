@@ -12,7 +12,35 @@ module top(dat_r, dat_w, we, clk, rst, adr);
   input rst;
   input we;
   reg [7:0] mem [15:0];
-  $readmemh("memdump0.mem", mem)
+  initial begin
+    mem[0] = 8'h90;
+    mem[1] = 8'hb3;
+    mem[2] = 8'h23;
+    mem[3] = 8'hfe;
+    mem[4] = 8'ha7;
+    mem[5] = 8'h4f;
+    mem[6] = 8'h2c;
+    mem[7] = 8'h5d;
+    mem[8] = 8'h57;
+    mem[9] = 8'h93;
+    mem[10] = 8'h5a;
+    mem[11] = 8'h77;
+    mem[12] = 8'h51;
+    mem[13] = 8'h12;
+    mem[14] = 8'h6e;
+    mem[15] = 8'h98;
+  end
+
+  reg [7:0] newmem [5:0];
+  initial begin
+    neawrr[0] = 8'h41;
+    neawrr[1] = 8'h22;
+    neawrr[2] = 8'h12;
+    neawrr[3] = 8'h02;
+    neawrr[4] = 8'h92;
+    neawrr[5] = 8'ha3;
+  end
+
   reg [3:0] _0_;
   always @(posedge clk) begin
     _0_ <= mem_r_addr;
