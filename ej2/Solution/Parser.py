@@ -41,7 +41,6 @@ def parser(filename : str) -> None:
         dump_name = 'memdump{}.mem'
         open_command = '$readmemh("memdump{}.mem", {});\n'
 
-
         for i, match in enumerate(re.finditer(regex, content)):
             string = match.group()
 
@@ -84,6 +83,7 @@ def test(file_in : str, expected : str) -> bool:
     idx_path = file_in.find('/')
 
     with open(expected, 'r') as file: string1 = file.read()
+
     with open(file_in[ : idx_path + 1] + 'parsed_' + file_in[idx_path + 1 : ], 'r') as file:
         string2 = file.read()
 
