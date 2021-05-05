@@ -127,7 +127,7 @@ async def burst(dut):
     # Number of bits per register
     width = len(dut.a__data)
 
-    # Minimum and maximum limits for {width}-bit data.
+    # Minimum and maximum limits for {width}-bit signed data.
     minlim, maxlim = -2**(width - 1), 2**(width - 1) - 1
 
     # Generates N random signed numbers with {width} bits for each input register.

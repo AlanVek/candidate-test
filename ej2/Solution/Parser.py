@@ -91,4 +91,3 @@ def test(file_in : str, expected : str) -> bool:
 
 if __name__ == '__main__':
     print(f'Worked: {test("Data/new_testcase.v", "Data/new_expected.v")}')
-

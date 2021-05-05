@@ -67,4 +67,15 @@ module top(dat_r, dat_w, we, clk, rst, adr);
     mem_w_en = 1'h0;
     mem_w_en = we;
   end
+
+  reg [7:0] new_newmem [5:0];
+  initial begin
+    neawrr[0] = 8'h21;
+    neawrr[1] = 8'h23;
+    neawrr[2] = 8'h11;
+    neawrr[3] = 8'ha2;
+    neawrr[4] = 8'hb6;
+    neawrr[5] = 8'ha3;
+  end
+
 endmodule

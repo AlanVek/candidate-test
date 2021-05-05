@@ -43,4 +43,8 @@ module top(dat_r, dat_w, we, clk, rst, adr);
     mem_w_en = 1'h0;
     mem_w_en = we;
   end
+
+  reg [7:0] new_newmem [5:0];
+  $readmemh("memdump2.mem", new_newmem);
+
 endmodule
