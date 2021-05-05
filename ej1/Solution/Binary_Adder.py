@@ -30,6 +30,9 @@ class Stream(Record):
             self.valid : cocotb_object = getattr(dut, prefix + 'valid')
             self.ready : cocotb_object = getattr(dut, prefix + 'ready')
 
+            self.valid.setimmediatevalue(0)
+            self.ready.setimmediatevalue(0)
+
         async def send(self, data):
             """ Sends stream of data """
 
@@ -80,8 +83,8 @@ class Binary_Adder(Elaboratable):
         sync = m.d.sync
         comb = m.d.comb
 
-        # If r is accepted, it means there was an initialization issue, so we set r.valid to 0,
-        # which means its output is not yet valid, but it's ready to receive input.
+        # If r is accepted, it means it already sent valid output, so we set r.valid to 0,
+        # which means its output is not yet valid, but it's ready to receive new input.
         with m.If(self.r.accepted()):
             sync += self.r.valid.eq(0)
 
@@ -97,10 +100,12 @@ class Binary_Adder(Elaboratable):
             ]
 
         # a and b will be ready to send output if:
-        #   - r is not currently sending valid output or
-        #   - r is ready for input and has already sent valid output
-        comb += self.a.ready.eq((~self.r.valid) | (self.r.accepted()))
-        comb += self.b.ready.eq((~self.r.valid) | (self.r.accepted()))
+        #   (- r is not currently sending valid output or
+        #   - r is ready for input and has already sent valid output) and
+        #   - the other input is sending valid output
+        comb += self.a.ready.eq((~self.r.valid | self.r.accepted()) & self.b.valid)
+        comb += self.b.ready.eq((~self.r.valid | self.r.accepted()) & self.a.valid)
+
         return m
 
 async def init_test(dut):
@@ -147,8 +152,12 @@ async def burst(dut):
     ]
 
     cocotb.fork(stream_input_a.send(data_a))
-    cocotb.fork(stream_input_b.send(data_b))
 
+    # Waits 10 posedge before sending data_b, to check if a will hold its value until b picks it up
+    for _ in range(10):
+        await RisingEdge(dut.clk)
+
+    cocotb.fork(stream_input_b.send(data_b))
     res = await stream_output.recv(N)
     assert res == expected
 
