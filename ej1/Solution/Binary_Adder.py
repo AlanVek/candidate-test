@@ -22,7 +22,7 @@ class Stream(Record):
         return self.valid & self.ready
 
     class Driver:
-        """ Driver for stream handling"""
+        """ Driver for stream handling """
 
         def __init__(self, clk, dut, prefix):
             self.clk = clk
